@@ -1,22 +1,24 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
 class Search extends Component {
   state = {
     text: "",
   };
-  static propTypes={
-      searchUsers:PropTypes.func.isRequired,
-  }
+  static propTypes = {
+    searchUsers: PropTypes.func.isRequired,
+    clearUsers: PropTypes.func.isRequired,
+    showClear: PropTypes.bool.isRequired,
+  };
   onChange = (event) => {
     //this.setState({ text: event.target.value });
     this.setState({ [event.target.name]: event.target.value });
   };
-  
+
   onSubmit = (event) => {
-      event.preventDefault();
-      this.props.searchUsers(this.state.text);
-      this.setState({text:''})
+    event.preventDefault();
+    this.props.searchUsers(this.state.text);
+    this.setState({ text: "" });
   };
 
   render() {
@@ -36,6 +38,14 @@ class Search extends Component {
             className="btn btn-dark btn-block"
           />
         </form>
+        {this.props.showClear && (
+          <button
+            className="btn btn-light btn-block"
+            onClick={this.props.clearUsers}
+          >
+            Clear
+          </button>
+        )}
       </div>
     );
   }
