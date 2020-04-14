@@ -1,8 +1,10 @@
-import React from "react";
+import React, { Fragment,Component } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
 import Search from "./components/users/Search";
-import Alert from "./components/layout/Alert"
+import Alert from "./components/layout/Alert";
+import About from "./components/Pages/About"
 import axios from "axios";
 import "./App.css";
 
@@ -41,24 +43,40 @@ class App extends React.Component {
   };
   setAlert = (msg, type) => {
     this.setState({ alert: { msg: msg, type: type } });
-    setTimeout(()=>this.setState({alert:null}),5000)
+    setTimeout(() => this.setState({ alert: null }), 5000);
   };
 
   render() {
     return (
-      <div className="App">
-        <Navbar title="Github Finder" icon="fab fa-github" />
-        <div className="container">
-          <Alert alert={this.state.alert}/>
-          <Search
-            searchUsers={this.searchUsers}
-            clearUsers={this.clearUsers}
-            showClear={this.state.users.length > 0 ? true : false}
-            setAlert={this.setAlert}
-          />
-          <Users loading={this.state.loading} users={this.state.users} />
+      <Router>
+        <div className="App">
+          <Navbar title="Github Finder" icon="fab fa-github" />
+          <div className="container">
+            <Alert alert={this.state.alert} />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <Fragment>
+                    <Search
+                      searchUsers={this.searchUsers}
+                      clearUsers={this.clearUsers}
+                      showClear={this.state.users.length > 0 ? true : false}
+                      setAlert={this.setAlert}
+                    />
+                    <Users
+                      loading={this.state.loading}
+                      users={this.state.users}
+                    />
+                  </Fragment>
+                )}
+              />
+              <Route exact path="/about" component={About}/>
+            </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
