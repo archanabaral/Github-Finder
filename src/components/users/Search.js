@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {
+const Search = ({ searchUsers, showClear, clearUsers, showAlert }) => {
   const [text, setText] = useState(""); //text is state name and setText is a method to change the state and these are destructured from useState
 
   const onChange = (event) => {
@@ -13,7 +13,7 @@ const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {
   const onSubmit = (event) => {
     event.preventDefault();
     if (text === "") {
-      setAlert("please enter something", "light");
+      showAlert("please enter something", "light");
     } else {
       searchUsers(text);
       // this.setState({ text: "" });
@@ -49,7 +49,7 @@ Search.propTypes = {
   searchUsers: PropTypes.func.isRequired,
   clearUsers: PropTypes.func.isRequired,
   showClear: PropTypes.bool.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  showAlert: PropTypes.func.isRequired,
 };
 
 export default Search;
