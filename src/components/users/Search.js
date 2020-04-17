@@ -1,7 +1,13 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useContext } from "react";
 
-const Search = ({ searchUsers, showClear, clearUsers, showAlert }) => {
+import GithubContext from "../../context/github/githibContext";
+import AlertContext from "../../context/alert/alertContext";
+
+const Search = () => {
+  const githubContext = useContext(GithubContext);
+  const alertContext = useContext(AlertContext);
+  const { showAlert } = alertContext;
+
   const [text, setText] = useState(""); //text is state name and setText is a method to change the state and these are destructured from useState
 
   const onChange = (event) => {
@@ -15,7 +21,7 @@ const Search = ({ searchUsers, showClear, clearUsers, showAlert }) => {
     if (text === "") {
       showAlert("please enter something", "light");
     } else {
-      searchUsers(text);
+      githubContext.searchUsers(text);
       // this.setState({ text: "" });
       setText("");
     }
@@ -37,19 +43,16 @@ const Search = ({ searchUsers, showClear, clearUsers, showAlert }) => {
           className="btn btn-dark btn-block"
         />
       </form>
-      {showClear && (
-        <button className="btn btn-light btn-block" onClick={clearUsers}>
+      {githubContext.users.length > 0 && (
+        <button
+          className="btn btn-light btn-block"
+          onClick={githubContext.clearUsers}
+        >
           Clear
         </button>
       )}
     </div>
   );
-};
-Search.propTypes = {
-  searchUsers: PropTypes.func.isRequired,
-  clearUsers: PropTypes.func.isRequired,
-  showClear: PropTypes.bool.isRequired,
-  showAlert: PropTypes.func.isRequired,
 };
 
 export default Search;

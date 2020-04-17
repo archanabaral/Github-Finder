@@ -1,12 +1,19 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useContext } from "react";
 import Spinner from "../layout/Spinner";
 import Repos from "../repos/Repos";
 import { Link } from "react-router-dom";
+import GithubContext from '../../context/github/githibContext'
 
-const User = ({ getUser, getUserRepos, User, loading, repos, match }) => {
+
+const User = ({  match }) => {
+  const githubContext=useContext(GithubContext);
+
+  const {getUser , loading ,user,getUserRepos,repos}=githubContext;
+
   //with useEffect we pass in an arrow function and [] to define condition when we want useEffect method to run here we want only once so empty bracket
   useEffect(() => {
     getUser(match.params.login);
+    //console.log(match.params.login)
     getUserRepos(match.params.login);
     //eslint-disable-next-line
   }, []);
@@ -15,7 +22,7 @@ const User = ({ getUser, getUserRepos, User, loading, repos, match }) => {
   //   getUser(match.params.login);
   //   getUserRepos(match.params.login);
   // }
-
+  
   const {
     name,
     avatar_url,
@@ -30,7 +37,7 @@ const User = ({ getUser, getUserRepos, User, loading, repos, match }) => {
     public_repos,
     public_gists,
     hireable,
-  } = User;
+  } = user;
 
   if (loading) {
     return <Spinner />;
@@ -102,7 +109,7 @@ const User = ({ getUser, getUserRepos, User, loading, repos, match }) => {
         <div className="badge badge-light">Public Repos:{public_repos}</div>
         <div className="badge badge-dark">Public Gists:{public_gists}</div>
       </div>
-      <Repos repos={repos} />
+      <Repos repos={repos}/>
     </Fragment>
   );
 };
